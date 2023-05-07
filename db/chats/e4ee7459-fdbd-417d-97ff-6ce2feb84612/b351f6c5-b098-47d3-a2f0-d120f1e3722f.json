@@ -1,0 +1,40 @@
+{
+    "id": "b351f6c5-b098-47d3-a2f0-d120f1e3722f",
+    "messages": [
+        {
+            "role": "system",
+            "content": "a random message",
+            "name": null
+        },
+        {
+            "role": "user",
+            "content": "a random message",
+            "name": "username-test"
+        },
+        {
+            "role": "assistant",
+            "content": "a random message",
+            "name": null
+        },
+        {
+            "role": "user",
+            "content": "a second-test-message",
+            "name": "username-test"
+        },
+        {
+            "role": "assistant",
+            "content": "Hello, how can I assist you? Is there anything specific you need help with?",
+            "name": null
+        },
+        {
+            "role": "user",
+            "content": "a second-test-message",
+            "name": "username-test"
+        },
+        {
+            "role": "assistant",
+            "content": "Hello, how can I assist you? Is there anything specific you need help with?",
+            "name": null
+        }
+    ]
+}
