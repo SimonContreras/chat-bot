@@ -2,7 +2,7 @@
 User model
 """
 
-from pydantic import BaseModel, EmailStr  # pylint: disable=no-name-in-module
+from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 
 class User(BaseModel):
@@ -10,7 +10,7 @@ class User(BaseModel):
     User model
     """
 
-    id: str
-    username: str
+    id: int
     name: str
-    email: EmailStr
+    display_name: str
+    discriminator: str
