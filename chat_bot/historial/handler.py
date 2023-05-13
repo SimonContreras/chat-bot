@@ -61,7 +61,7 @@ class ChatHistorialHandler:
             logger.warning(f_e)
         return chat_historial
 
-    def save(
+    def update(
         self, user_id: str, chat_id: str, new_prompt: Message, new_response: Message
     ) -> bool:
         """Update existing ChatHistorial with the new prompt and the correponding
@@ -127,9 +127,7 @@ class ChatHistorialHandler:
             chat_path, f"{chat_id}{Extensions.DOT_JSON.value}"
         )
 
-    def create(
-        self, user_id: str, system_profiling: Message, assistant_response: Message
-    ) -> Path:
+    def create(self, user_id: str, channel_id: str) -> Path:
         """Creates a new ChatHistorial
 
         Args:
@@ -145,10 +143,15 @@ class ChatHistorialHandler:
             Path: the Path object with the file full path.
         """
         try:
-            chat_id = str(uuid4())
-            new_chat_historial = ChatHistorial(
-                id=chat_id, messages=[system_profiling, assistant_response]
+            chat_id = channel_id
+            new_chat_historial = ChatHistorial(id=chat_id)
+            parent_dir = self.path_handler.compose_path(
+                [
+                    *self.path_components,
+                    user_id,
+                ]
             )
+            self.path_handler.create_directory(parent_dir)
             new_chat_historial_path = self.path_handler.compose_path(
                 [
                     *self.path_components,
