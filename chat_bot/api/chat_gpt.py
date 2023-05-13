@@ -16,7 +16,7 @@ from chat_bot.historial.handler import ChatHistorialHandler
 from chat_bot.models.historial import ChatHistorial
 
 
-class OpenAiApi:
+class OpenAIApi:
     """
     Core class to connect to OpenAI API
     """
@@ -130,7 +130,7 @@ class OpenAiApi:
             raise a_e
 
         if save:
-            self.chat_historial_handler.save(
+            self.chat_historial_handler.update(
                 self.user.id, historial_messages.id, new_prompt, new_response
             )
         return chat_response
