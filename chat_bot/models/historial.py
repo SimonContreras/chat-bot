@@ -15,10 +15,11 @@ class ChatHistorial(BaseModel):
     """
 
     id: str
+    message_to_react_id: str
     system_profile_set: bool = False
     is_reaction_positive: bool = False
     reacted_to_profiling_step: bool = False
-    messages: List[Message] = None
+    messages: List[Message] = []
 
     class Config:
         """Configs"""
@@ -29,4 +30,5 @@ class ChatHistorial(BaseModel):
             "system_profile_set": {"include": True},
             "is_reaction_positive": {"include": True},
             "reacted_to_profiling_step": {"include": True},
+            "message_to_react_id": {"include": True},
         }
