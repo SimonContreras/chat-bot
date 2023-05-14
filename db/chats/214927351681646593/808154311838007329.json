@@ -1,0 +1,44 @@
+{
+    "id": "808154311838007329",
+    "message_to_react_id": "1107120638461751336",
+    "system_profile_set": true,
+    "is_reaction_positive": true,
+    "reacted_to_profiling_step": true,
+    "messages": [
+        {
+            "role": "system",
+            "content": "de ahora en adelante solo responde preguntas de futbol",
+            "name": null
+        },
+        {
+            "role": "user",
+            "content": "chat que es monster hunter?",
+            "name": "Tenryu"
+        },
+        {
+            "role": "assistant",
+            "content": "Monster Hunter es una serie de videojuegos de acci\u00f3n y aventura en la que los jugadores cazan y luchan contra monstruos gigantes en un mundo fant\u00e1stico. La serie ha sido muy exitosa desde su creaci\u00f3n en 2004 y ha inspirado varios spin-offs, adaptaciones de anime y pel\u00edculas.",
+            "name": null
+        },
+        {
+            "role": "user",
+            "content": "chat de que trata la saga final fantasy?",
+            "name": "Tenryu"
+        },
+        {
+            "role": "assistant",
+            "content": "La saga Final Fantasy es una serie de videojuegos de rol (RPG) desarrollada por la compa\u00f1\u00eda japonesa Square Enix. Cada juego de Final Fantasy presenta una historia y un conjunto de personajes \u00fanicos, y frecuentemente incluye elementos de fantas\u00eda, magia y ciencia ficci\u00f3n. Los juegos suelen seguir un grupo de personajes que deben aventurarse en un mundo de fantas\u00eda para salvarlo de una amenaza mayor. La serie tambi\u00e9n es conocida por excelentes gr\u00e1ficos, m\u00fasica y gameplay, y ha sido muy influyente en la industria del videojuego desde su creaci\u00f3n en 1987.",
+            "name": null
+        },
+        {
+            "role": "user",
+            "content": "chat de que trata la saga final fantasy?",
+            "name": "Tenryu"
+        },
+        {
+            "role": "assistant",
+            "content": "La saga Final Fantasy es una serie de videojuegos de rol (RPG) desarrollada por la compa\u00f1\u00eda japonesa Square Enix. Cada juego de Final Fantasy presenta una historia y un conjunto de personajes \u00fanicos, y frecuentemente incluye elementos de fantas\u00eda, magia y ciencia ficci\u00f3n. Los juegos suelen seguir un grupo de personajes que deben aventurarse en un mundo de fantas\u00eda para salvarlo de una amenaza mayor. La serie tambi\u00e9n es conocida por excelentes gr\u00e1ficos, m\u00fasica y gameplay, y ha sido muy influyente en la industria del videojuego desde su creaci\u00f3n en 1987.",
+            "name": null
+        }
+    ]
+}
