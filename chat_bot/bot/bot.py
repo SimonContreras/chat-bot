@@ -67,13 +67,22 @@ async def chat(ctx: Context):
             await ctx.send(DefaultMessages.REACT_TO_MESSAGE_OTHERWISE_BLOCK.value)
 
         elif chat_historial.reacted_to_profiling_step:
-            await ctx.send(":thinking:")
+            thinking_emoji = ":thinking:"
+            response_message = await ctx.message.channel.send(thinking_emoji)
+
+            """Make API Call"""
             user = UserHandler().load(user_id=author_id)
             openai_client = OpenAIApi(token=OPENAI_SETTINGS.OPENAI_API_KEY, user=user)
             api_response = openai_client.send_chat_completion(
                 chat_id=channel_id, content=message_content, role=Roles.USER.value
             )
-            await ctx.send(api_response.choices[0].message.content)
+
+            """On Response Delete emoji and replace with API Response"""
+            message_content = response_message.content
+            message_with_api_response = message_content.replace(
+                thinking_emoji, api_response.choices[0].message.content
+            )
+            await response_message.edit(content=message_with_api_response)
 
 
 @bot.event
