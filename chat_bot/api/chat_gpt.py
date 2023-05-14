@@ -2,7 +2,6 @@
 Class to interact with openai API
 """
 from copy import deepcopy
-from uuid import uuid4
 import openai
 from openai.openai_object import OpenAIObject
 from openai.error import AuthenticationError
@@ -39,9 +38,7 @@ class OpenAIApi:
     def _test_token(self) -> bool:
         status = False
         prompt = "Just trying the token validity via an api call"
-        message = Message(
-            role=Roles.USER.value, content=prompt, name=self.user.username
-        )
+        message = Message(role=Roles.USER.value, content=prompt, name=self.user.name)
         try:
             self.api.ChatCompletion.create(
                 model=self.model, messages=[message.dict()], max_tokens=5
@@ -53,7 +50,7 @@ class OpenAIApi:
         return status
 
     def _consolidate_messages(
-        self, historial_messages: ChatHistorial, new_message: Message
+        self, historial_messages: ChatHistorial, new_message: Message, chat_id: str
     ) -> ChatHistorial:
         """Add a new message at the end of the ChatHistorial
 
@@ -72,7 +69,7 @@ class OpenAIApi:
                 consolidated_messages = deepcopy(historial_messages)
             else:
                 consolidated_messages = ChatHistorial(
-                    id=str(uuid4()), messages=[new_message]
+                    id=chat_id, messages=[new_message]
                 )
         except ValidationError as v_e:
             logger.error(v_e)
@@ -87,7 +84,7 @@ class OpenAIApi:
         save: bool = True,
         use_historial: bool = True,
     ) -> ChatCompletionResponse | None:
-        """First version of API call to chat completion, supports chathistorial
+        """First version of API call to chat completion, supports ChatHistorial
         and persistency if the call is succesfull.
 
         Args:
@@ -105,14 +102,14 @@ class OpenAIApi:
         """
         chat_response = None
         historial_messages = None
-        new_prompt = Message(role=role, content=content, name=self.user.username)
+        new_prompt = Message(role=role, content=content, name=self.user.name)
         try:
             if use_historial:
                 historial_messages: ChatHistorial = self.chat_historial_handler.load(
                     self.user.id, chat_id
                 )
             consolidated_messages = self._consolidate_messages(
-                historial_messages, new_prompt
+                historial_messages, new_prompt, chat_id
             )
             response: OpenAIObject = self.api.ChatCompletion.create(
                 model=self.model,
@@ -134,28 +131,3 @@ class OpenAIApi:
                 self.user.id, historial_messages.id, new_prompt, new_response
             )
         return chat_response
-
-    # this logic would me moved to the bot cogs or controllers when the user crud logic will be done.
-    def resolve_api_call(
-        self,
-        chat_id: str,
-        content: str,
-        role: str = Roles.USER.value,
-        save: bool = True,
-        use_historial: bool = True,
-    ):
-        if chat_id and self.chat_historial_handler.exists(self.user.id, chat_id):
-            self.send_chat_completion(chat_id, content, role, save, use_historial)
-        else:
-            system_profiling_message = Message(role=Roles.SYSTEM.value, content=content)
-            asistant_response = self.send_chat_completion(
-                chat_id, content, Roles.SYSTEM.value, False, False
-            )
-            assistance_response_message = Message(
-                role=Roles.ASSISTANT.value,
-                content=asistant_response.choices[0].message.content,
-                name=None,
-            )
-            self.chat_historial_handler.create(
-                self.user.id, system_profiling_message, assistance_response_message
-            )
