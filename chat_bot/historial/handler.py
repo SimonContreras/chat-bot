@@ -1,7 +1,6 @@
 """
 History handler class to load and save chat historial
 """
-from uuid import uuid4
 from pathlib import Path
 from pydantic import ValidationError
 from chat_bot.models.historial import ChatHistorial
@@ -62,16 +61,25 @@ class ChatHistorialHandler:
         return chat_historial
 
     def update(
-        self, user_id: str, chat_id: str, new_prompt: Message, new_response: Message
+        self,
+        user_id: str,
+        chat_id: str,
+        new_prompt: Message = None,
+        new_response: Message = None,
+        reacted_to_profiling_step: bool = False,
+        is_reaction_positive: bool = False,
+        system_profile_set: bool = False,
     ) -> bool:
-        """Update existing ChatHistorial with the new prompt and the correponding
-        API response.
+        """Update existing ChatHistorial with a new prompt  and or update flags
 
         Args:
             user_id (str): user id.
             chat_id (str): chat id.
             new_prompt (Message): New prompt to be saved.
             new_response (Message): New response to be saved.
+            reacted_to_profiling_step (bool): Flag to be updated.
+             is_reaction_positive (bool): Flag to be updated.
+            system_profile_set (bool): Flag to be updated.
 
         Raises:
             v_e: Pydantic Validation error.
@@ -85,8 +93,16 @@ class ChatHistorialHandler:
         historial_user_chat_path = None
         try:
             current_historial: ChatHistorial = self.load(user_id, chat_id)
-            current_historial.messages.append(new_prompt)
-            current_historial.messages.append(new_response)
+            if reacted_to_profiling_step:
+                current_historial.reacted_to_profiling_step = True
+            if is_reaction_positive:
+                current_historial.is_reaction_positive = True
+            if system_profile_set:
+                current_historial.system_profile_set = True
+            if new_prompt:
+                current_historial.messages.append(new_prompt)
+            if new_response:
+                current_historial.messages.append(new_response)
             historial_user_chat_path = self.path_handler.compose_path(
                 [
                     *self.path_components,
@@ -127,13 +143,13 @@ class ChatHistorialHandler:
             chat_path, f"{chat_id}{Extensions.DOT_JSON.value}"
         )
 
-    def create(self, user_id: str, channel_id: str) -> Path:
+    def create(self, user_id: str, channel_id: str, message_id: str) -> Path:
         """Creates a new ChatHistorial
 
         Args:
             user_id (str): user_id
-            system_profiling (Message): Profile defined for the chat.
-            assistant_response (Message): Response of the API about the profiling request sent.
+            channel_id (str): channel_id
+            message_id (str): message_id
 
         Raises:
             v_e: Pydantic Validation error.
@@ -144,7 +160,9 @@ class ChatHistorialHandler:
         """
         try:
             chat_id = channel_id
-            new_chat_historial = ChatHistorial(id=chat_id)
+            new_chat_historial = ChatHistorial(
+                id=chat_id, message_to_react_id=message_id
+            )
             parent_dir = self.path_handler.compose_path(
                 [
                     *self.path_components,
