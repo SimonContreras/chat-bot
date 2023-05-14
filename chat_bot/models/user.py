@@ -10,7 +10,7 @@ class User(BaseModel):
     User model
     """
 
-    id: int
+    id: str
     name: str
     display_name: str
     discriminator: str
