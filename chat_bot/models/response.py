@@ -1,7 +1,7 @@
 """
 Response model for OpenAI API calls
 """
-from typing import List, Dict
+from typing import List
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
