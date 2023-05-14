@@ -1,5 +1,4 @@
 """Main bot module"""
-from email import message
 from discord import Intents, RawReactionActionEvent
 from discord.ext import commands
 from discord.ext.commands.context import Context
@@ -15,14 +14,13 @@ from chat_bot.utils.configs import OPENAI_SETTINGS
 
 """Logger must be imported despite is an unused import"""
 from chat_bot.bot.utils.logger import logger  # pylint: disable=C0413,W0611
-from chat_bot.bot.constants.enums import DefaultMessages
-from chat_bot.bot.utils.configs import DISCORD_SETTINGS
+from chat_bot.bot.constants.enums import DefaultMessages, Prefix
 
 """This can be narrowed when all the features will be defined"""
 intents = Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix="$", intents=intents)
+bot = commands.Bot(command_prefix=Prefix.QUESTION_MARK.value, intents=intents)
 
 
 @bot.command()
@@ -55,7 +53,7 @@ async def chat(ctx: Context):
         )
 
         """Sent message to start system profiling step"""
-        await ctx.send(DefaultMessages.NO_PROFILING_SET.value)
+        await ctx.send(DefaultMessages.NO_PROFILING_SET.value.format(author_name=name))
 
     else:
         """Check if ChatHistorial is empty and if reaction is positive to add system profiling"""
@@ -148,6 +146,3 @@ async def profile(ctx: Context):
 
     else:
         await ctx.send("Oops Error!, Contacta a los admins del server")
-
-
-bot.run(DISCORD_SETTINGS.DISCORD_BOT_TOKEN, log_handler=None)
